@@ -1,5 +1,5 @@
 /**
- * Geometria: construye una geometría THREEJS y la retorna
+ * Geometria: construye una geometría THREE.js y la retorna
  * ENTRADAS: vx = Arreglo de vértices para la geometría (arreglo de arreglos)
  * SALIDAS: geom = Geometria construida a partir de vx
  */
@@ -15,34 +15,38 @@ function Geometria(vx){
     }
     return geom;
 }
+
 /**
- * Traslacion: Construye la matriz de traslacion THREEJS para el vector de traslacion vt y la retorna
+ * Traslacion: Construye la matriz de traslacion THREE.js para el vector de traslacion vt y la retorna
  * ENTRADAS: vt = Vector de traslacion (arreglo de enteros)
  * SALIDAS: matrizT = Matriz de traslacion 
  */
 function Traslacion(vt){
     var matrizT = new THREE.Matrix4();
     matrizT.set(1, 0, 0, vt[0],
-            0, 1, 0, vt[1],
-            0, 0, 1, vt[2],
-            0, 0, 0, 1);
-        
+    0, 1, 0, vt[1],
+    0, 0, 1, vt[2],
+    0, 0, 0, 1);
+    
     return matrizT;
 }
+
 /**
- * Escalado: Construye la matriz de escalado THREEJS para el vector vs y la retorna
+ * Escalado: Construye la matriz de escalado THREE.js para el vector vs y la retorna
  * ENTRADAS: vs = Vector de Escalado (arreglo de enteros)
- * SALIDAS: matrizS = Matriz de Escalado
+ * SALIDAS: matrizS = Matriz de Escalado para el vector 
  */
 function Escalado(vs) {
     var matrizS = new THREE.Matrix4();
     matrizS.set(vs[0], 0, 0, 0,
-            0, vs[1], 0, 0,
-            0, 0, vs[2], 0,
-            0, 0, 0, 1);
+    0, vs[1], 0, 0,
+    0, 0, vs[2], 0,
+    0, 0, 0, 1);
+    
     return matrizS;
 
 }
+
 /**
  * EscaladoReal: Aplica el vector de Escalado vs al objeto fig
  * ENTRADAS: fig = objeto tipo THREE.LINE que representa el objeto grafico
@@ -59,7 +63,7 @@ function EscaladoReal(fig, posini, vs){
 
 function init() {
 
-    // Escena
+    //Escena
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);    
     renderer = new THREE.WebGLRenderer();
@@ -73,7 +77,7 @@ function init() {
     var x = new THREE.Vector3( 1, 0, 0 );
     var y = new THREE.Vector3( 0, 1, 0 );
     var z = new THREE.Vector3( 0, 0, 1 );
-    var color2 = new THREE.Color( 0x333333 );  /// 0x333333
+    var color2 = new THREE.Color( 0x333333 );  
     var colorR = new THREE.Color( 0xAA0000 );
     var colorG = new THREE.Color( 0x00AA00 );
     var colorB = new THREE.Color( 0x0000AA );
@@ -93,52 +97,58 @@ function init() {
     camera.lookAt(scene.position);
 
     //Creación de las Figuras
-    //Piramide #1
-    lado =30; //lado de la base de la piramide
-    h = 45; //altura de la piramide
 
-    [v1,v2,v3,v4,v5]=[    
-        [0,0,0], 
-        [lado,0,0], 
-        [lado,0,lado], 
-        [0,0,lado], 
-        [lado/2,h,lado/2]
+    //Piramide #1
+    lado = 30; //lado de la base de la piramide
+    altura = 45; //altura de la piramide
+
+    [v1, v2, v3, v4, v5]=[  
+
+        [0, 0, 0], 
+        [lado, 0, 0], 
+        [lado, 0, lado], 
+        [0, 0, lado], 
+        [lado/2, altura, lado/2]
     ]
 
-    var vertices = [v1,v2,v3,v4,v5,v1,v4,v3,v5,v2];
+    var vertices = [v1, v2, v3, v4, v5, v1, v4, v3, v5, v2];
+
     geomPiramide = Geometria(vertices);
     var largoVertice = vertices.length;
 
-    // Colores para las piramides
+    //Colores para las piramides
     color = [{color:0xFF0000}, {color:0x00ff00}];
 
     //material para las piramides
     material = [];
-    for(i=0; i<2; i++){
+    for(i = 0; i < 2; i++){
         material.push(new THREE.ParticleBasicMaterial(color[i]));
     }
 
     //Figuras para las piramides
     piramide = [];
-    for(i = 0 ; i <2 ; i++){
+    for(i = 0; i < 2; i++){
         piramide.push(new THREE.Line(geomPiramide, material[i]));
     }
 
-    // En el documento HTML
-    document.body.appendChild(renderer.domElement);
-
     //Girar la segunda piramide
+    EscaladoReal(piramide[1], [lado/2, 0, lado/2], [-1, -1, -1])
 
-    // Agregar elementos al escenario
+    //En el documento HTML
+    document.body.appendChild(renderer.domElement);
+    
+    //Agregar elementos al escenario
     scene.add(gridHelperXZ);
     scene.add(arrowX);	
     scene.add(arrowY);	
     scene.add(arrowZ);
+
     for (i = 0; i < 2; i++){
         scene.add(piramide[i]);
         renderer.render(scene, camera)
     }
+    renderer.render(scene, camera)
 
 }
 
-init();  // otra forma: window.onload = init;
+init();
