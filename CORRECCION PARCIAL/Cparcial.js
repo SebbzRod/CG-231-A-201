@@ -91,15 +91,15 @@ function init() {
     var arrowZ = new THREE.ArrowHelper( z, origin, arrowSize, colorB );
         
     //Cámara
-    camera.position.x = 000;
-    camera.position.y = 100;
+    camera.position.x = 200;
+    camera.position.y = 200;
     camera.position.z = 400;
     camera.lookAt(scene.position);
 
     //Creación de las Figuras
 
     //Piramide #1
-    lado = 30; //lado de la base de la piramide
+    lado = 35; //lado de la base de la piramide
     altura = 45; //altura de la piramide
 
     [v1, v2, v3, v4, v5]=[  
@@ -148,7 +148,6 @@ function init() {
         renderer.render(scene, camera)
     }
     renderer.render(scene, camera)
-
 }
 
 init();
